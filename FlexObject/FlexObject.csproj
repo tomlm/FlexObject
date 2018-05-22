@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Tom Laird-McConnell</Authors>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>FlexObject gives an object that can seamlessly transition between dynamic and typed.
+* You can add arbitrary properties to a strongly typed class
+* You can dynamicly access/enumerate typed class properties and dynamic properties in the same way
+</Description>
+    <PackageLicenseUrl>https://github.com/tomlm/flexobject/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/tomlm/flexobject</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/tomlm/flexobject</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.4.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+
+</Project>

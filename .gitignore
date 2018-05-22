@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/FlexObject
+/FlexObject/bin/Debug
+/FlexObject/obj
+/FlexObject.Tests/bin/Debug
+/FlexObject.Tests/obj/Debug
+/packages
