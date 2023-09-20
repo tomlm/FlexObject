@@ -55,7 +55,7 @@ namespace Flex
         /// <returns></returns>
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            return _tryGetValue(binder.Name, out result);
+            return TryGetValue(binder.Name, out result);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Flex
         /// <returns></returns>
         public override bool TrySetMember(SetMemberBinder binder, object value)
         {
-            return _trySetValue(binder.Name, value);
+            return TrySetValue(binder.Name, value);
         }
         #endregion
 
@@ -94,12 +94,12 @@ namespace Flex
         {
             get
             {
-                this._tryGetValue(name, out object value);
+                this.TryGetValue(name, out object value);
                 return value;
             }
             set
             {
-                this._trySetValue(name, value);
+                this.TrySetValue(name, value);
             }
         }
 
@@ -120,18 +120,7 @@ namespace Flex
         /// <returns></returns>
         public bool Remove(string key)
         {
-            return _tryRemoveValue(key);
-        }
-
-        /// <summary>
-        /// Try and get a value from the object, returns false if the property does not exist
-        /// </summary>
-        /// <param name="property"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public bool TryGetValue(string property, out object value)
-        {
-            return this._tryGetValue(property, out value);
+            return TryRemoveValue(key);
         }
 
         /// <summary>
@@ -145,7 +134,7 @@ namespace Flex
             }
         }
 
-        private bool _tryGetValue(string name, out object result)
+        public virtual bool TryGetValue(string name, out object result)
         {
             if (this.dynamicProperties.ContainsKey(name))
             {
@@ -162,7 +151,7 @@ namespace Flex
             return true;
         }
 
-        private bool _trySetValue(string name, object value)
+        public virtual bool TrySetValue(string name, object value)
         {
             if (this.objectProperties.TryGetValue(name, out var prop))
             {
@@ -177,7 +166,7 @@ namespace Flex
             return true;
         }
 
-        private bool _tryRemoveValue(string name)
+        public virtual bool TryRemoveValue(string name)
         {
             if (this.objectProperties.ContainsKey(name))
             {
