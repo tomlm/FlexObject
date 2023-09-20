@@ -3,7 +3,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Dynamic;
-using System.Security.Principal;
 
 namespace Flex.Tests
 {
@@ -305,5 +304,22 @@ namespace Flex.Tests
             Assert.IsTrue(notifications.Contains("test"));
         }
 
+        [TestMethod]
+        public void FlexObject_GetValuePerumutations()
+        {
+            var car = new Car()
+            {
+                Name = "Volvo"
+            };
+            car["test"] = "test";
+
+            Assert.AreEqual("Volvo", car.GetValue("Name"));
+            Assert.AreEqual("Volvo", car.GetValue<string>("Name"));
+            car.TryGetValue<string>("Name", out var result1);
+            Assert.AreEqual("Volvo", result1);
+
+            car.TryGetValue("Name", out var result2);
+            Assert.AreEqual("Volvo", result2);
+        }
     }
 }

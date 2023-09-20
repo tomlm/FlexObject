@@ -15,6 +15,7 @@ namespace Flex
     /// </summary>
     /// <remarks>
     /// NOTE: Dyanmic properties will call PropertyChanged when changing, if you defined your own typed properties, you will need to call NotifyChanged() manually to get change notifications.
+    /// NOTE 2: Override TrySetValue/TryGetValue/TryRemoveValue to customize.  All other methods call these 3 methods.
     /// </remarks>
     public class FlexObject : DynamicObject, INotifyPropertyChanged
     {
@@ -134,6 +135,63 @@ namespace Flex
             }
         }
 
+        public object GetValue(string propertyName)
+        {
+            TryGetValue(propertyName, out var result);
+            return result;
+        }
+
+        public ValueT GetValue<ValueT>(string propertyName)
+        {
+            TryGetValue(propertyName, out var result);
+            return (ValueT)result;
+        }
+
+        public bool TryGetValue<ValueT>(string propertyName, out ValueT result)
+        {
+            result = default(ValueT);
+            if (TryGetValue(propertyName, out object obj))
+            {
+                result = (ValueT)obj;
+                return true;
+            }
+            return false;
+        }
+
+        public void SetValue(string propertyName, object value)
+        {
+            TrySetValue(propertyName, value);
+        }
+
+        /// <summary>
+        /// TrySetValue() for both real and dynamic properties.
+        /// </summary>
+        /// <remarks>override this to property setting (all other methods call this)</remarks>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public virtual bool TrySetValue(string name, object value)
+        {
+            if (this.objectProperties.TryGetValue(name, out var prop))
+            {
+                prop.SetValue(this, value);
+            }
+            else
+            {
+                dynamicProperties[name] = value;
+                NotifyChanged(name);
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// TryGetvalue() for both real and dynamic properties.
+        /// </summary>
+        /// <remarks>Override this to customize (all other methods call this)</remarks>
+        /// <param name="name"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
         public virtual bool TryGetValue(string name, out object result)
         {
             if (this.dynamicProperties.ContainsKey(name))
@@ -151,21 +209,12 @@ namespace Flex
             return true;
         }
 
-        public virtual bool TrySetValue(string name, object value)
-        {
-            if (this.objectProperties.TryGetValue(name, out var prop))
-            {
-                prop.SetValue(this, value);
-            }
-            else
-            {
-                dynamicProperties[name] = value;
-                NotifyChanged(name);
-            }
-
-            return true;
-        }
-
+        /// <summary>
+        /// TryRemoveValue() for both real and dynamic properties.
+        /// </summary>
+        /// <remarks>Override this to change value behavior (All other methods call this)</remarks>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public virtual bool TryRemoveValue(string name)
         {
             if (this.objectProperties.ContainsKey(name))
