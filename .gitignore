@@ -8,3 +8,6 @@
 /FlexObject.Tests/bin/Debug
 /FlexObject.Tests/obj/Debug
 /packages
+/tests/FlexObject.Tests/bin/Debug/net7.0
+/tests/FlexObject.Tests/obj
+/TestResults

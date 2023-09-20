@@ -59,7 +59,7 @@ You can also enumerate typed and untyped properties the same way.
 	}
 ```
 
-It also supports INotifyPropertyChanged notifications.
+It also supports change notification
 ``` C#
 	public class Car : FlexObject
 	{
